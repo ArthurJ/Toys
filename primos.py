@@ -40,6 +40,7 @@ def next_prime(file=sys.stdout):
         if is_prime(last):
             primes.append(last)
             print(last, file=file)
+            break
 
 # #TODO
 # #Implementar: Crivo de Erastostenes
