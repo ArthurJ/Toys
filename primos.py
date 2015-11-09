@@ -1,12 +1,13 @@
-# from utils import time_it
+from utils import time_it
 import sys
 
 primes = [2, 3, 5, 7, 11, 13, 17, 19]
 
 
-def is_prime(p):
+def is_prime(p, prime_list=primes):
     """
     :param p: Number to be tested
+    :param prime_list: lista de primos a usar como base
     :return: True if the number is prime, False otherwise
 
     >>> is_prime(1811)
@@ -14,12 +15,12 @@ def is_prime(p):
     >>> is_prime(1813)
     False
     """
-    if p in primes:
+    if p in prime_list:
         return True
 
     limite_de_teste = int(p**.5)
     ultimo = 0
-    for i in primes:
+    for i in prime_list:
         if p % i == 0:
             return False
         if i > limite_de_teste:
@@ -33,23 +34,51 @@ def is_prime(p):
     return True
 
 
-def next_prime(file=sys.stdout):
-    last = max(primes)
+@time_it()
+def next_prime(n=1, prime_list=primes,  file=sys.stdout):
+    """
+    :param n: Number of next primes to generate, default=1
+    :param prime_list: Initial list of primes
+    :param file: Print primes in this file, default=sys.stout
+
+    Generate n primes, prints it, and stores it in the primes list
+    """
+    last = max(prime_list)
     while True:
         last += 2
-        if is_prime(last):
-            primes.append(last)
+        if is_prime(last, prime_list=prime_list):
+            n -= 1
+            prime_list.append(last)
             print(last, file=file)
-            break
+            if n <= 0:
+                break
 
-# #TODO
-# #Implementar: Crivo de Erastostenes
-# #
-# #Exige ter um limite estabelecido para o usuario
-# #implementando o crivo, trabalharia com duas listas, uma com os numeros e outra com boleanos indicando a validade
-# #dos valores da primeira lista, e depois filtraria os valores da primeira com base na segunda.
-# #
-# #Deixar como opção no crivo um pré-teste para eliminar valores divisiveis por uma lista vinda de arquivo,
-# #assim dá pra filtrar primos de blocos de números separadamente:
-# #    0-99, 100-199 (usando tb os primos encontrados entre 0 e 99 salvos previamente), e assim por diante.
-# #isso deve permitir algum paralelismo!
+
+@time_it()
+def crivo(lim_superior, file=sys.stdout):
+    """
+    :param lim_superior: Maior numero na lista a ser usada no crivo
+    :param file: Arquivo onde serão escritos os valores descobertos,
+        default=sys.stout
+    :return: lista de primos descobertos
+
+    Essa implementação é mais lenta que o next_prime()
+    """
+    candidatos = range(lim_superior)
+    primialidade = [True]*lim_superior
+    primialidade[0] = False
+
+    for i, j in enumerate(candidatos):
+        if primialidade[i]:
+            for k, l in enumerate(candidatos[i+1:]):
+                if primialidade[k+i+1] and l % j == 0:
+                    primialidade[k+i+1] = False
+
+    primos_descobertos = []
+    for i, j in enumerate(candidatos):
+        if primialidade[i]:
+            primos_descobertos.append(j)
+            print(j, file=file)
+
+    return primos_descobertos
+

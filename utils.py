@@ -1,8 +1,9 @@
 from time import time
 
 
-def time_it(funcao_captora=None):
+def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} segundos"):
     """
+    :param string_explicativa: String a mostrar detalhes da função monitorada
     :param funcao_captora: Recebe o tempo, afim de disponíbilizar o resultado do decorator
 
         Decorator que mede e imprime o tempo de execução em segundos,
@@ -17,7 +18,7 @@ def time_it(funcao_captora=None):
             if funcao_captora:
                 funcao_captora(te-ts)
 
-            print('{}'.format(te-ts))
+            print(string_explicativa.format(te-ts))
             return result
         return wrapper
     return decorador
