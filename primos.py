@@ -62,9 +62,10 @@ def crivo(lim_superior, file=sys.stdout):
         default=sys.stout
     :return: lista de primos descobertos
 
-    Essa implementação é mais lenta que o next_prime()
+    Essa implementação é mais lenta que o next_prime() para encontrar a
+        mesma quantidade de números primos.
     """
-    candidatos = range(lim_superior)
+    candidatos = range(1, lim_superior)
     primialidade = [True]*lim_superior
     primialidade[0] = False
 
@@ -81,4 +82,3 @@ def crivo(lim_superior, file=sys.stdout):
             print(j, file=file)
 
     return primos_descobertos
-
