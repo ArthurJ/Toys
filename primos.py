@@ -41,9 +41,14 @@ def next_prime(file=sys.stdout):
             primes.append(last)
             print(last, file=file)
 
-
-# @time_it()
-# def test_next_prime(iteracoes):
-#     for i in range(iteracoes):
-#         next_prime()
-# test_next_prime(1000000)
+# #TODO
+# #Implementar: Crivo de Erastostenes
+# #
+# #Exige ter um limite estabelecido para o usuario
+# #implementando o crivo, trabalharia com duas listas, uma com os numeros e outra com boleanos indicando a validade
+# #dos valores da primeira lista, e depois filtraria os valores da primeira com base na segunda.
+# #
+# #Deixar como opção no crivo um pré-teste para eliminar valores divisiveis por uma lista vinda de arquivo,
+# #assim dá pra filtrar primos de blocos de números separadamente:
+# #    0-99, 100-199 (usando tb os primos encontrados entre 0 e 99 salvos previamente), e assim por diante.
+# #isso deve permitir algum paralelismo!
