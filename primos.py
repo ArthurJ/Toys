@@ -4,7 +4,7 @@ import sys
 primes = [2, 3, 5, 7, 11, 13, 17, 19]
 
 
-class ListTooShortException(Exception):
+class PrimeListTooShortException(Exception):
     def __init__(self, expr, msg):
         self.expr = expr
         self.msg = msg
@@ -30,14 +30,14 @@ def is_prime(p, prime_list=primes):
             return False
         if i > limite_de_teste:
             return True
-    raise ListTooShortException
+    raise PrimeListTooShortException
 
 
 @time_it()
 def next_prime(n=1, prime_list=primes,  file=sys.stdout, cache_limit=False):
     """
     :param n: Number of next primes to generate, default=1
-    :param prime_list: Initial list of primes
+    :param prime_list: Initial list of primes, minimum list must be [2, 3]
     :param file: Print primes in this file, default=sys.stout
     :param cache_limit: Superior limit number to store in the prime_list
 
@@ -54,11 +54,8 @@ def next_prime(n=1, prime_list=primes,  file=sys.stdout, cache_limit=False):
                     prime_list.append(last)
                 if n <= 0:
                     break
-    except ListTooShortException:
+    except PrimeListTooShortException:
         print('Too limited cache to continue!', file=sys.stderr)
-
-
-next_prime(14488, prime_list=[2, 3])
 
 
 @time_it()
