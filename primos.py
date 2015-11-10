@@ -5,9 +5,8 @@ primes = [2, 3, 5, 7, 11, 13, 17, 19]
 
 
 class PrimeListTooShortException(Exception):
-    def __init__(self, expr, msg):
-        self.expr = expr
-        self.msg = msg
+    def __init__(self):
+        self.msg = 'Prime list is not long enougth to test this number'
 
 
 def is_prime(p, prime_list=primes):
@@ -30,7 +29,7 @@ def is_prime(p, prime_list=primes):
             return False
         if i > limite_de_teste:
             return True
-    raise PrimeListTooShortException
+    raise PrimeListTooShortException()
 
 
 @time_it()
