@@ -33,16 +33,23 @@ def is_prime(p, prime_list=primes):
 
 
 @time_it()
-def next_prime(n=1, prime_list=primes,  file=sys.stdout, cache_limit=False):
+def next_prime(n=1, prime_list=primes,  file=sys.stdout, cache_limit=False, start_ahead=False):
     """
     :param n: Number of next primes to generate, default=1
     :param prime_list: Initial list of primes, minimum list must be [2, 3]
     :param file: Print primes in this file, default=sys.stout
     :param cache_limit: Superior limit number to store in the prime_list
+    :param start_ahead: Seek for primes starting in this value
 
     Generate n primes, prints it, and stores it in the primes list
     """
-    last = max(prime_list)
+    if not start_ahead:
+        last = max(prime_list)
+    else:
+        if start_ahead % 2 == 0:
+            last = start_ahead - 1
+        else:
+            last = start_ahead - 2
     try:
         while True:
             last += 2
