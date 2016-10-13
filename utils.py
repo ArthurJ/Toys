@@ -22,3 +22,31 @@ def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} seg
             return result
         return wrapper
     return decorador
+
+#---------------------------------------------------------------------------------------------
+import numpy as np
+
+def walk(matriz, f=lambda x: np.min(x), kernel=3):
+    ''' 
+        Recebe uma matriz MxN.
+        Devolve uma outra MxN (com as bordas excluídas), em que cada píxel [x,y] interno passou por uma
+        função f (default: min) cujo argumento é uma matriz quadrada de dimensionalidade k que é a
+        vizinhança imediata da posição [x,y] em que f está sendo aplicado
+        
+        A função walk foi desenvolvida durante o estudo de processamento de imagens digitais.
+        A borda é deletada para evitar que o kernel ande para fora da imagem.
+        Para evitar a exclusão das bordas, acrescente bordas de valor 0 e tamanho k.
+        
+        Para usar máscaras, basta colocar na função f.
+    '''
+    k=(kernel-1)//2
+    shape = np.shape(matriz)
+    nmatriz = np.zeros(shape, dtype='int')
+    for px in range(k,shape[0]-k):
+        for py in range(k,shape[1]-k):
+            nmatriz[px,py] = f(matriz[px-k:px+k+1,py-k:py+k+1])
+    return nmatriz
+
+# x = np.arange(625).reshape((25,25))
+# print(x)
+# print(walk(x))
