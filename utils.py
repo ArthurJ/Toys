@@ -47,6 +47,16 @@ def walk(matriz, f=lambda x: np.min(x), kernel=3):
             nmatriz[px,py] = f(matriz[px-k:px+k+1,py-k:py+k+1])
     return nmatriz
 
+def equalize(pixel_value, sub, sup):
+    ''' 
+        Função de equalização de imagem
+        sub: menor valor na imagem
+        sup: maior valor na imagem
+        pixel_value: valor do pixel a ser equalizado
+    '''
+    b=len(bin(sup)[2:])
+    v = round(((2**b)-1)*(pixel_value-sub)/(sup-sub))
+    return v
 # x = np.arange(625).reshape((25,25))
 # print(x)
 # print(walk(x))
