@@ -1,5 +1,5 @@
 from time import time
-
+from functools import wraps
 
 def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} segundos"):
     """
@@ -10,6 +10,7 @@ def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} seg
         opcionalmente recebe uma função que recebe o tempo, e pode enviar a outro objeto.
     """
     def decorador(method):
+        @wraps(method)
         def wrapper(*args, **kw):
             ts = time()
             result = method(*args, **kw)
