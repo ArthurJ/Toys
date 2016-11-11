@@ -61,3 +61,31 @@ def equalize(pixel_value, sub, sup):
 # x = np.arange(625).reshape((25,25))
 # print(x)
 # print(walk(x))
+
+#---------------------------------------------------------------------------------------------
+import numpy as np
+from numpy import ones, inf
+
+def floyd_warshall(dim, conexoes):
+    '''
+        Recebe a dimensão da matriz de conexões e uma lista de arestas ligadas.
+        retorna uma matriz de distancias entre as arestas.
+    '''
+    dim+=1
+    dist = ones([dim, dim], dtype=np.int)
+    dist = inf*dist
+    
+    for i in range(dim):
+        dist[i, i] = 0
+
+    for i, j in conexoes:
+        dist[i, j] = 1
+
+    for i in range(dim):
+        for j in range(dim):
+            if i == j:
+                continue
+            for k in range(dim):
+                dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
+
+    return dist
