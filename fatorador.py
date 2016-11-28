@@ -1,62 +1,68 @@
 from numpy import array, fromiter, append, \
-			    	unique, sum, sqrt, log, ulonglong
+    unique, sum, ulonglong, sqrt
 
 dt_padrao = ulonglong
-valor = dt_padrao(input('Entre com o valor: '))
+funcao_limitadora = sqrt
 
-# Garante que o limite n'ao explodirá para números grandes
-limite_verificado = log(valor) 
-limite_verificado = int(limite_verificado)+1
-if limite_verificado % 2 == 0:
-	limite_verificado += 1
 
-	
 def calc_divisores(valor, limite_verificado):
-	return fromiter([i for i in range(limite_verificado, 1, -2) 
-						if valor % i == 0], dtype=dt_padrao)
+    if limite_verificado % 2 == 0:
+        limite_verificado += 1
+    divisores = fromiter([i for i in range(limite_verificado, 1, -2) if valor % i == 0],
+                         dtype=dt_padrao)
+    if valor % 2 == 0:
+        divisores = append(divisores, [2])
+    # print(divisores)
+    return divisores
 
-						
+
 def calc_divisores_primos(divisores):
     return unique(fromiter([i for x in divisores
-                                for i in divisores 
-                                if x <= i
-                                and sum(i % divisores == 0)==1], 
-                            dtype=dt_padrao),
-                    return_inverse=True)[0]
+                            for i in divisores
+                            if x <= i
+                            and sum(i % divisores == 0) == 1],
+                           dtype=dt_padrao),
+                  return_inverse=True)[0]
 
 
 def fatora(v, divisores_primos):
-	while v != 1:
-		v_ini = v
-		for d in divisores_primos:
-			if v % d == 0:
-				v/=d
-				break
-		if v_ini == v:
-			if v % 2 != 0:
-				divisores_primos = append(divisores_primos, 
-									  array([v_ini], 
-									  dtype=dt_padrao))
-			else:
-				v/=2
-				divisores_primos = append(divisores_primos, 
-									  array([2], 
-									  dtype=dt_padrao))
-	return divisores_primos
+    while v != 1:
+        v_ini = dt_padrao(v)
+        for d in divisores_primos:
+            while v % d == 0:
+                v /= d
+                # print(d)
+        if v_ini == v:
+            divisores = calc_divisores(v_ini, int(funcao_limitadora(v_ini) + 1))
+            divisores = append(divisores, v_ini)
+            divisores = calc_divisores_primos(divisores)
 
-	
-# Encontro os primeiros fatores primos do valor do input
-# (por que é fácil e barato)
+            divisores_primos = append(divisores_primos, array(divisores,
+                                      dtype=dt_padrao))
 
-divisores = calc_divisores(valor, limite_verificado)
-divisores_primos = calc_divisores_primos(divisores)
+    return divisores_primos
 
-# Uso os fatores primos menores para encontrar os maiores
-# por fatoração simples
+if __name__ == '__main__':
 
-divisores_primos = fatora(valor, divisores_primos)			  
-divisores_primos.sort()
+    entrada = dt_padrao(input('Entre com o valor: '))
+    # entrada = dt_padrao(7406 * (31 ** 2) * 1109)
+    # entrada = dt_padrao(99991) * dt_padrao(99989) * \
+    #   dt_padrao(23 ** 2) * dt_padrao(2 ** 3) * dt_padrao(7 ** 4)
 
-print('\n\nValor de entrada:', valor)
-print('Divisores primos:', divisores_primos)
-print('Maior divisor primo: ', divisores_primos[-1])
+    # Garante que o limite não explodirá para números muito grandes
+    limite = funcao_limitadora(entrada)
+    limite = int(limite) + 1
+
+    # Encontro os primeiros fatores primos do valor do input
+    # (por que é fácil e barato)
+    divisores_calculados = calc_divisores(entrada, limite)
+    divisores_primos_calculados = calc_divisores_primos(divisores_calculados)
+
+    # Uso os fatores primos menores para encontrar os maiores
+    # por fatoração simples
+    divisores_primos_calculados = fatora(entrada, divisores_primos_calculados)
+    divisores_primos_calculados.sort()
+
+    print('\n\nValor de entrada:', entrada)
+    print('Divisores primos:', divisores_primos_calculados)
+    print('Maior divisor primo: ', divisores_primos_calculados[-1])
