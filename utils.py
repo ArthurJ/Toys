@@ -1,11 +1,11 @@
 from time import time
 from functools import wraps
 
-def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} segundos"):
+def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} segundos", repeat=1):
     """
-    :param string_explicativa: String a mostrar detalhes da função monitorada
+    :param string_explicativa: String a mostrar detalhes da função monitorada. default = 1
     :param funcao_captora: Recebe o tempo, afim de disponíbilizar o resultado do decorator
-
+    :param repeat: Número de vezes que o processo deve ser executado para obter uma média de tempo de execução
         Decorator que mede e imprime o tempo de execução em segundos,
         opcionalmente recebe uma função que recebe o tempo, e pode enviar a outro objeto.
     """
@@ -13,13 +13,17 @@ def time_it(funcao_captora=None, string_explicativa="Tempo de execução: {} seg
         @wraps(method)
         def wrapper(*args, **kw):
             ts = time()
-            result = method(*args, **kw)
+            result = None
+            for i in range(repeat):
+                result = method(*args, **kw)
             te = time()
 
-            if funcao_captora:
-                funcao_captora(te-ts)
+            delta = (te-ts)/repeat
 
-            print(string_explicativa.format(te-ts))
+            if funcao_captora:
+                funcao_captora(delta)
+
+            print(string_explicativa.format(delta))
             return result
         return wrapper
     return decorador
