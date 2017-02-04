@@ -3,6 +3,9 @@ from itertools import product
 from sys import stdout
 
 
+''' Avaliar probabilidades de vitória em somas de rolagens de conjuntos de dados de jogadores competindo entre si.'''
+
+
 def ifprint(*args, should_doit=True,**kwargs):
     if should_doit:
         print(*args, **kwargs)
