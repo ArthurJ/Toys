@@ -14,3 +14,6 @@ def fib(n, descartar_anteriores=False, seq_fib=__inicial):
             seq_fib[max(seq_fib) + 1] = \
                 seq_fib[(max(seq_fib))] + seq_fib[(max(seq_fib) - 1)]
     return seq_fib[n]
+
+
+# TODO implementar matricial
