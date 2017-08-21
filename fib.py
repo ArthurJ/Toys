@@ -15,5 +15,12 @@ def fib(n, descartar_anteriores=False, seq_fib=__inicial):
                 seq_fib[(max(seq_fib))] + seq_fib[(max(seq_fib) - 1)]
     return seq_fib[n]
 
+# --------------------------------------------------------------------
 
-# TODO implementar matricial
+import numpy as np
+from numpy import array
+
+def mfib(n, seq_fib=array([[1,1,],[1, 0]], dtype=np.ulonglong)):
+    out_seq = np.array(seq_fib)
+    _ = [out_seq.dot(seq_fib, out=out_seq) for i in range(1, n)]
+    return out_seq[0,0]
