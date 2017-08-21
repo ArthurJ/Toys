@@ -4,3 +4,5 @@
 *~
 *.log
 *.tar.gz
+*metastore_db
+*ipynb*
