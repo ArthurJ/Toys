@@ -93,3 +93,11 @@ def floyd_warshall(dim, conexoes):
                 dist[i, j] = min(dist[i, j], dist[i, k] + dist[k, j])
 
     return dist
+
+#---------------------------------------------------------------------------------------------
+
+def replace_by_one(padroes, str_original, padrao_novo):
+    str_nova = str_original
+    for padrao in padroes:
+        str_nova = str_nova.replace(padrao, padrao_novo)
+    return str_nova
