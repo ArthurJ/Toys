@@ -5,4 +5,4 @@
 *.log
 *.tar.gz
 *metastore_db
-*ipynb*
+.ipynb_checkpoints
