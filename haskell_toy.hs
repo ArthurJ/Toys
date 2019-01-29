@@ -13,11 +13,8 @@ rightTriangle :: Int -> [(Int, [(Int, Int, Int)])]
 rightTriangle sideSum = [v | v <- [(x, pythagorasTriples x) | x <- [1..sideSum]], not (null (snd v))]
 
 
-circunference :: Float -> Float
+circunference :: Floating a => a -> a
 circunference r = 2*pi*r
-
-circunference' :: Double -> Double
-circunference' r = 2*pi*r
 
 
 imcValor :: (Floating a) => a -> a -> a
@@ -87,8 +84,20 @@ zip' (x:xs) (y:ys) = (x,y): zip' xs ys
 
 elem' :: (Eq a) => a -> [a] -> Bool
 elem' _ [] = False
-elem' x (y:ys) | x == y = True
-              | otherwise = elem' x ys
+elem' x (y:ys)  | x == y = True
+                | otherwise = elem' x ys
+
+
+qsearch ::  Ord a => [a] -> [a]
+qsearch [] = []
+qsearch [x] = [x]
+qsearch (x:xs) = qsearch [z | z <- xs, z <= x] ++ x:qsearch [z | z <- xs, z > x]
+
+
+collatz :: Integer -> [Integer]
+collatz 1 = []
+collatz n   | even n = n:collatz (div n 2)
+            | otherwise = n:collatz (n*3+1)
 
 
 -- main = print $ rightTriangle 500
