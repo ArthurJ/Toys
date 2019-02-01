@@ -21,14 +21,14 @@ imcValor :: (Floating a) => a -> a -> a
 imcValor altura peso = peso/altura^2
 
 imcClass :: Float -> String
-imcClass valor  | valor < 16 = "Magreza grave"
-                | valor < 17 = "Magreza moderada"
-                | valor < 18.5 = "Magreza leve"
-                | valor < 25 = "Saudável"
-                | valor < 30 = "Sobrepeso"
-                | valor < 35 = "Obesidade grau I"
-                | valor < 40 = "Obesidade grau II (Severa)"
-                | otherwise = "Obesidade grau III (Mórbida)"
+imcClass valor  | valor < 16 =  "Magreza grave"
+                | valor < 17 =  "Magreza moderada"
+                | valor < 18.5 ="Magreza leve"
+                | valor < 25 =  "Saudável"
+                | valor < 30 =  "Sobrepeso"
+                | valor < 35 =  "Obesidade grau I"
+                | valor < 40 =  "Obesidade grau II (Severa)"
+                | otherwise =   "Obesidade grau III (Mórbida)"
 
 
 calculaImc :: Float -> Float -> String
@@ -88,16 +88,18 @@ elem' x (y:ys)  | x == y = True
                 | otherwise = elem' x ys
 
 
-qsearch ::  Ord a => [a] -> [a]
-qsearch [] = []
-qsearch [x] = [x]
-qsearch (x:xs) = qsearch [z | z <- xs, z <= x] ++ x:qsearch [z | z <- xs, z > x]
+qsort ::  Ord a => [a] -> [a]
+qsort [] = []
+qsort [x] = [x]
+qsort (x:xs) = qsort [z | z <- xs, z <= x] ++ x:qsort [z | z <- xs, z > x]
 
 
 collatz :: Integer -> [Integer]
 collatz 1 = []
 collatz n   | even n = n:collatz (div n 2)
             | otherwise = n:collatz (n*3+1)
+
+
 
 
 -- main = print $ rightTriangle 500
