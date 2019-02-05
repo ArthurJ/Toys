@@ -11,9 +11,9 @@ testes = [
 
 
 def swap(lst, i, j):
-    #print(f'({i}, {j}): {lst} -> ', end='')
+    print(f'({i}, {j}): {lst} -> ', end='')
     lst[i], lst[j] = lst[j], lst[i]
-    #print(f'{lst}')
+    print(f'{lst}')
 
 
 def sort(lst, comparison):
@@ -25,16 +25,16 @@ def sort(lst, comparison):
                     break
                 moves += 1
                 swap(lst, j, j+1)
-    #print('Finish:', lst)
-    #print('Moves:', moves, '\n')
+    print('Finish:', lst)
+    print('Moves:', moves, '\n')
     return moves
 
 
 if __name__ == '__main__':
 
     for t in testes:
-        #print('Start:', t, '\n')
-        minimum = min(sort(t, lambda a, b: a > b),
-                      sort(t, lambda a, b: a < b))
+        print('Start:', t, '\n')
+        minimum = min(sort(t.copy(), lambda a, b: a > b),
+                      sort(t.copy(), lambda a, b: a < b))
         print(f'Minimum moves: {minimum}')
-        #print(30*'-', '\n', sep='')
+        print(30*'-', '\n', sep='')
