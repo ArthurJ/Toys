@@ -18,4 +18,12 @@ next_prime x lst| is_prime x 0 lst = lst ++ [x]
 next_n_primes n lst | n <= 0 = lst
                     | otherwise = next_n_primes (n-1) (next_prime 0 lst) 
 
+primos = filtraPrimos [2..]
+    where filtraPrimos (p:xs) =
+        p : filtraPrimos [x | x <- xs , 
+            let s=(ceiling (sqrt (fromInteger x))),
+            p>s || 
+            x `mod` p /= 0
+        ]
+
 main =  print $ next_n_primes 5000 prime_list
