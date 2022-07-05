@@ -11,7 +11,6 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     print!("\n{:?}", quicksort::quicksort(vec![88,1,2,3,99,4,5,0,6,1101]));
-
 }
 
 fn fibonacci(){
@@ -30,3 +29,9 @@ fn fibonacci(){
         Some(number) => println!("{}-th Fibonacci number: {}", val, number)
     }
 }
+
+/* TODO
+Torres de Hanoi
+Quicksort novamente
+Alocação Genética
+ */

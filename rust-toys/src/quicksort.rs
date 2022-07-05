@@ -21,10 +21,9 @@ pub fn quicksort<T>(list:Vec<T>) -> Vec<T>
 
             let mut output:Vec<T> = Vec::new();
 
-            let mut greater:Vec<T> = list_without_pivot.clone();
-            let mut lesser:Vec<T> = list_without_pivot
-                                        .into_iter().filter(|x| *x<pivot).collect();
-            greater = greater.into_iter().filter(|x| *x>=pivot).collect();
+            let lesser:Vec<T>;
+            let greater:Vec<T>;
+            (lesser, greater) = list_without_pivot.into_iter().partition(|x| *x < pivot);
 
             output.extend(quicksort(Vec::from(lesser)));
             output.push(pivot);
