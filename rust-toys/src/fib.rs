@@ -25,7 +25,7 @@ pub fn fib_seq(mut x: usize, mut y: usize, qtd: usize) -> Vec<usize> {
         2 => {seq.push(x); seq.push(y); seq},
         _ => {
             seq.push(x); seq.push(y);
-            for _ in 1..(qtd-1) {
+            for _ in 1..=qtd {
                 (x, y) = (y, y+x);
                 seq.push(y);
             }
