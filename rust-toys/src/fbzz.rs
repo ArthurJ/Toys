@@ -3,7 +3,7 @@ pub fn fizzbuzz(fizz_num: usize, buzz_num: usize, limit: usize){
         let fizz = i%fizz_num==0;
         let buzz = i%buzz_num==0;
 
-        match true{
+        match true {
             _ if fizz && buzz => print!("Fizzbuzz!"),
             _ if fizz => print!("Fizz"),
             _ if buzz => print!("Buzz"),
@@ -11,5 +11,4 @@ pub fn fizzbuzz(fizz_num: usize, buzz_num: usize, limit: usize){
         }
 
         print!("\n");
-    }
-}
+    }}

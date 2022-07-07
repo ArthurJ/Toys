@@ -16,41 +16,23 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    //prime1();
-    //prime2(100000);
-    prime3(1_000_000);
+    print_primes(100_000_000);
 }
 
-fn prime1(){
-    let known_primes:LinkedList<usize> = LinkedList::from([2, 3, 5, 7, 11, 13, 17, 19, 23]);
-    let last = 400;
-    let limit=primes::root_limit(last);
-    print!("\nRoot limit: {limit}");
-    for i in 0..last{
-        if primes::is_prime(i, limit,&known_primes).unwrap(){
-            print!("{i:3.0}, ");
-        }
-        if i%100==0{
-            println!("");
-        }
-    }
-    println!()
-}
-
-fn prime2(qtd:usize){
-    primes::gen_primes(qtd)
-            .iter().enumerate()
-            .map(|(i,p)| ((i%20==0), p))
-            .for_each(|(i,p)| print!("{p:7.0}, {}",if i{"\n"} else{""}));
-}
-
-fn prime3(qtd:usize){
+fn print_primes(qtd:usize){
     let mut primes = primes::Primes{ known_primes: LinkedList::from([2, 3])};
     (1..qtd).map(|_|primes.next().unwrap())
             .enumerate()
             .map(|(i,p)| ((i%20==0), p))
             .for_each(|(i,p)| print!("{p:7.0}, {}",if i{"\n"} else{""}));
 }
+/*
+Calculando 10 milhões de primos em menos de 7 minutos!
+Executed in  397.03 secs    fish           external
+   usr time  366.02 secs    0.14 millis  366.02 secs
+   sys time    3.33 secs    1.64 millis    3.32 secs
+*/
+
 
 fn fibonacci(){
     let fib_seed_1 = 0;

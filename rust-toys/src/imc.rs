@@ -21,5 +21,4 @@ pub fn calc_imc(altura: f64, peso: f64)-> IMC {
         _ if (imc<35.0) => IMC::Obesidade,
         _ if (imc<40.0) => IMC::ObesidadeSevera,
         _ => IMC::ObesidadeMorbida
-    }
-}
+    }}

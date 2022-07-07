@@ -66,10 +66,9 @@ impl Iterator for Primes {
                         &self.known_primes).unwrap(){
                 self.known_primes.push_back(candidate);
                 break
-            }else{
+            } else {
                 candidate+=2;
             }}
         Some(candidate)
-    }
-}
+    }}
 

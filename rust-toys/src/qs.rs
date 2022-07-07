@@ -16,6 +16,4 @@ pub fn quicksort<T>(list:&[T]) -> Vec<T>
             output.push(*head);
             output.extend(quicksort(&greater));
             output
-        }
-    }
-}
+        }}}

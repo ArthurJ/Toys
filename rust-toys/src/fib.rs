@@ -12,10 +12,7 @@ pub fn fibonacci_until(mut x:usize, mut y:usize, limit:usize) {
                 (x, y) = (y, y + x);
                 if y > limit { break };
                 print!("{}, ", y);
-            }
-        }
-    }
-}
+            }}}}
 
 pub fn fib_seq(mut x: usize, mut y: usize, qtd: usize) -> Vec<usize> {
     let mut seq = vec![];
@@ -30,9 +27,7 @@ pub fn fib_seq(mut x: usize, mut y: usize, qtd: usize) -> Vec<usize> {
                 seq.push(y);
             }
             seq
-        }
-    }
-}
+        }}}
 
 pub fn nth_fib(mut x:usize, mut y:usize, mut n:usize) -> Option<usize>{
     match n {
