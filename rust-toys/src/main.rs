@@ -3,6 +3,8 @@
 
 extern crate core;
 
+use std::collections::LinkedList;
+
 mod fib;
 mod fbzz;
 mod imc;
@@ -15,11 +17,12 @@ fn main() {
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
     //prime1();
-    prime2(100000);
+    //prime2(100000);
+    prime3(1_000_000);
 }
 
 fn prime1(){
-    let known_primes:Vec<usize> = vec![2, 3, 5, 7, 11, 13, 17, 19, 23];
+    let known_primes:LinkedList<usize> = LinkedList::from([2, 3, 5, 7, 11, 13, 17, 19, 23]);
     let last = 400;
     let limit=primes::root_limit(last);
     print!("\nRoot limit: {limit}");
@@ -37,6 +40,14 @@ fn prime1(){
 fn prime2(qtd:usize){
     primes::gen_primes(qtd)
             .iter().enumerate()
+            .map(|(i,p)| ((i%20==0), p))
+            .for_each(|(i,p)| print!("{p:7.0}, {}",if i{"\n"} else{""}));
+}
+
+fn prime3(qtd:usize){
+    let mut primes = primes::Primes{ known_primes: LinkedList::from([2, 3])};
+    (1..qtd).map(|_|primes.next().unwrap())
+            .enumerate()
             .map(|(i,p)| ((i%20==0), p))
             .for_each(|(i,p)| print!("{p:7.0}, {}",if i{"\n"} else{""}));
 }
