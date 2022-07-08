@@ -9,3 +9,6 @@
 *.hi
 *.o
 .DS_Store
+.vscode
+__pycache__
+.history

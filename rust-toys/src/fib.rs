@@ -1,5 +1,6 @@
-#[allow(unused_variables)]
-#[allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(dead_code)]
+
 
 pub fn fibonacci_until(mut x:usize, mut y:usize, limit:usize) {
     match limit{
@@ -22,7 +23,7 @@ pub fn fib_seq(mut x: usize, mut y: usize, qtd: usize) -> Vec<usize> {
         2 => {seq.push(x); seq.push(y); seq},
         _ => {
             seq.push(x); seq.push(y);
-            for _ in 1..=qtd {
+            for _ in 1..(qtd-1) {
                 (x, y) = (y, y+x);
                 seq.push(y);
             }

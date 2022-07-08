@@ -1,5 +1,5 @@
-#[allow(unused_variables)]
-#[allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(dead_code)]
 
 extern crate core;
 
@@ -11,28 +11,27 @@ mod imc;
 mod qs;
 mod primes;
 
+/* TODO
+    Torres de Hanoi
+    Quicksort novamente
+    Alocação Genética
+ */
+
 fn main() {
     //fibonacci();
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    print_primes(100_000_000);
+    print_primes(10_000);
 }
 
 fn print_primes(qtd:usize){
-    let mut primes = primes::Primes{ known_primes: LinkedList::from([2, 3])};
+    let mut primes = primes::PrimeIterator {known_primes: LinkedList::from([2, 3])};
     (1..qtd).map(|_|primes.next().unwrap())
             .enumerate()
             .map(|(i,p)| ((i%20==0), p))
-            .for_each(|(i,p)| print!("{p:7.0}, {}",if i{"\n"} else{""}));
+            .for_each(|(i,p)| print!("{p:12.0}, {}", if i{"\n"} else{""}));
 }
-/*
-Calculando 10 milhões de primos em menos de 7 minutos!
-Executed in  397.03 secs    fish           external
-   usr time  366.02 secs    0.14 millis  366.02 secs
-   sys time    3.33 secs    1.64 millis    3.32 secs
-*/
-
 
 fn fibonacci(){
     let fib_seed_1 = 0;
@@ -50,9 +49,3 @@ fn fibonacci(){
         Some(number) => println!("{}-th Fibonacci number: {}", val, number)
     }
 }
-
-/* TODO
-Torres de Hanoi
-Quicksort novamente
-Alocação Genética
- */

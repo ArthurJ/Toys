@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::collections::LinkedList;
 
 #[derive(Debug)]
@@ -10,7 +12,6 @@ pub fn is_prime(val: usize, test_limit:usize, prime_list:&LinkedList<usize>)
     if val<2 {return Ok(false)}
     if val<*prime_list.back().unwrap() {
         if prime_list.contains(&val) { return Ok(true) }
-        //else{return Ok(false);}
     }
     for i in prime_list{
         if val % i == 0 {return Ok(false)}
@@ -42,7 +43,7 @@ pub fn append_next_prime(mut prime_list:LinkedList<usize>) -> LinkedList<usize>{
 }
 
 pub fn gen_primes(qtd:usize) -> LinkedList<usize>{
-    let mut known_primes = LinkedList::from([2, 3, 5, 7, 11, 13, 17, 19, 23]);
+    let mut known_primes = LinkedList::from([2, 3, 5]);
     for _ in 1..=qtd{
         known_primes = append_next_prime(known_primes);
     }
@@ -50,11 +51,11 @@ pub fn gen_primes(qtd:usize) -> LinkedList<usize>{
 }
 
 #[derive(Debug)]
-pub struct Primes{
+pub struct PrimeIterator {
     pub known_primes:LinkedList<usize>,
 }
 
-impl Iterator for Primes {
+impl Iterator for PrimeIterator {
     type Item = usize;
 
     fn next(&mut self) -> Option<usize> {
@@ -71,4 +72,26 @@ impl Iterator for Primes {
             }}
         Some(candidate)
     }}
+
+/*
+    Calculo de 10 mil primos em menos de 0.4s
+Executed in    1.11 secs      fish           external
+   usr time  399.01 millis    0.16 millis  398.84 millis
+   sys time  204.57 millis    1.13 millis  203.44 millis
+_____________________________________________________
+Calculo de 50 mil primos em +/- 0.6s
+Executed in    1.73 secs      fish           external
+   usr time  538.92 millis  121.00 micros  538.80 millis
+   sys time  183.72 millis  734.00 micros  182.98 millis
+_____________________________________________________
+   Calculo 10 milhões de primos em menos de 7 minutos!
+Executed in  397.03 secs    fish           external
+   usr time  366.02 secs    0.14 millis  366.02 secs
+   sys time    3.33 secs    1.64 millis    3.32 secs
+_____________________________________________________
+    Calculo 100 milhões de primos em +/- 3 horas e 15min
+Executed in  195.45 mins    fish           external
+   usr time  192.58 mins    0.13 millis  192.58 mins
+   sys time    2.25 mins    1.12 millis    2.25 mins
+*/
 

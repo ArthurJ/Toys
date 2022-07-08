@@ -24,4 +24,4 @@ crivo (p:ps) = p : crivo [x | x <- ps, mod x p /= 0 ]
 
 primos = crivo [2..]
 
-main =  print $ next_n_primes 5000 prime_list
+main =  print $ next_n_primes 10000 prime_list
