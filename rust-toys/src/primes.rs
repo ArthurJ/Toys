@@ -53,24 +53,25 @@ pub fn gen_primes(qtd:usize) -> LinkedList<usize>{
 #[derive(Debug)]
 pub struct PrimeIterator {
     pub known_primes:LinkedList<usize>,
+    pub last:usize
 }
 
 impl Iterator for PrimeIterator {
     type Item = usize;
 
     fn next(&mut self) -> Option<usize> {
-        let last = *self.known_primes.back().unwrap();
-        let mut candidate:usize = last+2;
+        let mut last = self.last;
+        let limit= root_limit(last);
         loop{
-            if is_prime(candidate,
-                        root_limit(last),
+            last+=2;
+            if is_prime(last,
+                        limit,
                         &self.known_primes).unwrap(){
-                self.known_primes.push_back(candidate);
+                self.known_primes.push_back(last);
                 break
-            } else {
-                candidate+=2;
             }}
-        Some(candidate)
+        self.last=last;
+        Some(last)
     }}
 
 /*
