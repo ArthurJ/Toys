@@ -22,7 +22,7 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    print_primes(10_000_000);
+    print_primes(50_000);
 }
 
 fn print_primes(qtd:usize){

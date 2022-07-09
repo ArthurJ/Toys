@@ -61,7 +61,7 @@ impl Iterator for PrimeIterator {
 
     fn next(&mut self) -> Option<usize> {
         let mut last = self.last;
-        let limit= root_limit(last);
+        let limit= root_limit(last)+1; 
         loop{
             last+=2;
             if is_prime(last,
@@ -73,6 +73,14 @@ impl Iterator for PrimeIterator {
         self.last=last;
         Some(last)
     }}
+
+/* tirar o limite do loop economiza processamento, 
+    Analizando as diferenças entre as raízes de números primos sequenciais, 
+    essa diferença parece ser sempre menor que 1.
+    E tende a diminuir quanto maior ficam os números primos.
+
+    https://en.wikipedia.org/wiki/Prime_gap
+*/
 
 /*
     Calculo de 10 mil primos em menos de 0.4s
