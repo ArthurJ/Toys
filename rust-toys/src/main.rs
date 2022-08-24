@@ -22,15 +22,15 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    print_primes(50_000);
+    //print_primes(30);
+    //println!("{:?}",primes::prime_until(50_000));
+    //println!();
 }
 
 fn print_primes(qtd:usize){
-    let mut primes = primes::PrimeIterator{known_primes:LinkedList::from([3,5]), last:5};
-    (1..qtd).map(|_| primes.next().unwrap())
-            .enumerate()
+    primes::primes_until(qtd).iter().enumerate()
             .map(|(i,p)| ((i%20==0), p))
-            .for_each(|(i,p)| print!("{p:10.0}, {}", if i{"\n"} else{""}));
+            .for_each(|(i,p)| print!("{p:3.0}, {}", if i{"\n"} else{""}));
 }
 
 fn fibonacci(){

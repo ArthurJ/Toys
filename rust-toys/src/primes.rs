@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use std::collections::LinkedList;
+use std::collections::BTreeSet as Set;
 
 #[derive(Debug)]
 pub enum PrimeError{
@@ -24,39 +25,13 @@ pub fn root_limit(maximum:usize) -> usize{
     ((maximum as f64).sqrt()) as usize
 }
 
-pub fn append_next_prime(mut prime_list:LinkedList<usize>) -> LinkedList<usize>{
-    if prime_list.is_empty(){
-        prime_list = LinkedList::from([2,3])
-    }
-    let last:usize = *prime_list.back().unwrap();
-    let mut candidate = last+2;
-    loop{
-        if is_prime(candidate,
-                    root_limit(last),
-                    &prime_list).unwrap(){
-            prime_list.push_back(candidate);
-            break
-        }
-        candidate+=2;
-    }
-    prime_list
-}
-
-pub fn gen_primes(qtd:usize) -> LinkedList<usize>{
-    let mut known_primes = LinkedList::from([2, 3, 5]);
-    for _ in 1..=qtd{
-        known_primes = append_next_prime(known_primes);
-    }
-    known_primes
-}
-
 #[derive(Debug)]
-pub struct PrimeIterator {
+pub struct NaivePrimeList {
     pub known_primes:LinkedList<usize>,
     pub last:usize
 }
 
-impl Iterator for PrimeIterator {
+impl Iterator for NaivePrimeList {
     type Item = usize;
 
     fn next(&mut self) -> Option<usize> {
@@ -74,8 +49,36 @@ impl Iterator for PrimeIterator {
         Some(last)
     }}
 
+pub fn sundaram_sieve(n:usize)->LinkedList<usize>{
+    let k = (n-2)/2 as usize;
+    let mut composites_seeds:Set<usize> = Set::new();
+    let mut primes:LinkedList<usize> = LinkedList::new();
+    let mut range = Set::new();
+    for i in 1..=k{
+        range.insert(i);
+        for j in i..=k{
+            let l = i + j + 2 * i * j;
+            if l>k{continue}
+            composites_seeds.insert(l);
+        }
+    }
+    for m in range.difference(&composites_seeds){
+        primes.push_back(2*m+1)
+    }
+    primes
+}
+
+pub fn primes_until(qtd: usize) -> LinkedList<usize>{
+    let mut prime_list = NaivePrimeList{known_primes:LinkedList::from([3]), last:3};
+    for i in 1..qtd{
+        prime_list.next().unwrap();
+        if prime_list.last >= qtd {break;}
+    }
+    prime_list.known_primes
+}
+
 /* tirar o limite do loop economiza processamento, 
-    Analizando as diferenças entre as raízes de números primos sequenciais, 
+    Analizando as diferenças entre as raízes de números primos sequenciais,
     essa diferença parece ser sempre menor que 1.
     E tende a diminuir quanto maior ficam os números primos.
 
