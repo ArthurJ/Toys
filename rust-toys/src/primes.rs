@@ -31,17 +31,23 @@ pub struct NaivePrimeList {
     pub last:usize
 }
 
+impl NaivePrimeList{
+    pub fn new(known_primes:LinkedList<usize>, last:usize) -> NaivePrimeList{
+        NaivePrimeList{known_primes, last}
+    }
+}
+
 impl Iterator for NaivePrimeList {
     type Item = usize;
 
     fn next(&mut self) -> Option<usize> {
         let mut last = self.last;
-        let limit= root_limit(last)+1; 
+        let limit= root_limit(last)+1;
         loop{
             last+=2;
             if is_prime(last,
-                        limit,
-                        &self.known_primes).unwrap(){
+            limit,
+            &self.known_primes).unwrap(){
                 self.known_primes.push_back(last);
                 break
             }}
@@ -49,10 +55,47 @@ impl Iterator for NaivePrimeList {
         Some(last)
     }}
 
-pub fn sundaram_sieve(n:usize)->LinkedList<usize>{
+/* tirar o limite do loop economiza processamento,
+    Analizando as diferenças entre as raízes de números primos sequenciais,
+    essa diferença parece ser sempre menor que 1.
+    E tende a diminuir quanto maior ficam os números primos.
+
+    https://en.wikipedia.org/wiki/Prime_gap
+*/
+
+pub fn primes_until(qtd: usize) -> LinkedList<usize>{
+    let mut prime_list = NaivePrimeList::new(LinkedList::from([3]),3);
+    for i in 1..qtd{
+        prime_list.next().unwrap();
+        if prime_list.last >= qtd {break;}
+    }
+    prime_list.known_primes
+}
+
+/* Testando o desempenho desse Iterador, comparando Vectors e LinkedLists,
+vetores consistentemente foram piores que listas ligadas,
+apesar dos resultados terem sempre a mesma ordem de grandeza.
+Assim, se a lógica a ser aplicada se manter simples,
+listas ligadas tem desempenho melhor.
+
+Se, por outro lado, for necessário acesso a um valor intermediário
+(que não seja a cabeça ou a cauda da lista),
+vetores serão mais fáceis de usar sem afetarem o desempenho significativamente.
+
+Obs.: SOB A CONDIÇÃO DE O VETOR JÁ SER CRIADO COM SUA CAPACIDADE FINAL DEFINIDA:
+Existe um custo de crescimento relacionado aos vetores,
+a cada exento de crescimento todos os itens precisam ser copiados para o novo espaço na memória.
+Esses eventos são raros (cada vez que o vetor enche, sua capacidade deve crescer para o dobro da atual)
+
+Na maioria dos casos, use vetores; se precisar do máximo de desempenho, considere usar listas ligadas.
+*/
+
+
+pub fn sundaram_sieve(n:usize) -> Vec<usize>{
     let k = (n-2)/2 as usize;
+    let mut primes = Vec::with_capacity(n);
+    primes.push(2);
     let mut composites_seeds:Set<usize> = Set::new();
-    let mut primes:LinkedList<usize> = LinkedList::new();
     let mut range = Set::new();
     for i in 1..=k{
         range.insert(i);
@@ -63,47 +106,23 @@ pub fn sundaram_sieve(n:usize)->LinkedList<usize>{
         }
     }
     for m in range.difference(&composites_seeds){
-        primes.push_back(2*m+1)
+        primes.push(2*m+1)
     }
     primes
-}
+} /* Essa implementação está com desempenho ruim, provavelmente devido a operação `difference`*/
 
-pub fn primes_until(qtd: usize) -> LinkedList<usize>{
-    let mut prime_list = NaivePrimeList{known_primes:LinkedList::from([3]), last:3};
-    for i in 1..qtd{
-        prime_list.next().unwrap();
-        if prime_list.last >= qtd {break;}
+pub fn erathostenes_sieve(n:usize) -> Vec<usize> {
+    let number_list = 2..n;
+    let mut prime_list:Vec<usize>= Vec::with_capacity(n);
+    for j in number_list.clone(){
+        prime_list.push(j);
+        for i in number_list.clone() {
+            if j<=i{continue};
+            if j%i==0{
+                prime_list.pop();
+                break
+            }
+        }
     }
-    prime_list.known_primes
+    prime_list
 }
-
-/* tirar o limite do loop economiza processamento, 
-    Analizando as diferenças entre as raízes de números primos sequenciais,
-    essa diferença parece ser sempre menor que 1.
-    E tende a diminuir quanto maior ficam os números primos.
-
-    https://en.wikipedia.org/wiki/Prime_gap
-*/
-
-/*
-    Calculo de 10 mil primos em menos de 0.4s
-Executed in    1.11 secs      fish           external
-   usr time  399.01 millis    0.16 millis  398.84 millis
-   sys time  204.57 millis    1.13 millis  203.44 millis
-_____________________________________________________
-Calculo de 50 mil primos em +/- 0.6s
-Executed in    1.73 secs      fish           external
-   usr time  538.92 millis  121.00 micros  538.80 millis
-   sys time  183.72 millis  734.00 micros  182.98 millis
-_____________________________________________________
-   Calculo 10 milhões de primos em menos de 7 minutos!
-Executed in  397.03 secs    fish           external
-   usr time  366.02 secs    0.14 millis  366.02 secs
-   sys time    3.33 secs    1.64 millis    3.32 secs
-_____________________________________________________
-    Calculo 100 milhões de primos em +/- 3 horas e 15min
-Executed in  195.45 mins    fish           external
-   usr time  192.58 mins    0.13 millis  192.58 mins
-   sys time    2.25 mins    1.12 millis    2.25 mins
-*/
-

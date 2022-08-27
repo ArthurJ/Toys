@@ -23,14 +23,19 @@ fn main() {
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
     //print_primes(30);
-    //println!("{:?}",primes::prime_until(50_000));
+    // for _ in 0..10 {
+    //     primes::primes_until(10_000_000);
+    // }
     //println!();
+    println!("{:?}",primes::erathostenes_sieve(110/*_000*/));
+    println!("{:?}",primes::sundaram_sieve(110/*_000*/));
 }
 
 fn print_primes(qtd:usize){
     primes::primes_until(qtd).iter().enumerate()
             .map(|(i,p)| ((i%20==0), p))
             .for_each(|(i,p)| print!("{p:3.0}, {}", if i{"\n"} else{""}));
+    println!()
 }
 
 fn fibonacci(){
