@@ -1,7 +1,9 @@
+#![feature(int_log)]
 #![allow(unused_variables)]
 #![allow(dead_code)]
 
 extern crate core;
+extern crate bit_vec;
 
 use std::collections::LinkedList;
 
@@ -22,20 +24,20 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    //print_primes(30);
-    // for _ in 0..10 {
-    //     primes::primes_until(10_000_000);
+    print_number_list( primes::erathostenes_sieve(1_0_000_000));
+    // print_number_list( primes::sundaram_sieve(500_000));
+    // for _ in 0..100{
+    //     primes::erathostenes_sieve(1_0_000_000);
     // }
     //println!();
-    println!("{:?}",primes::erathostenes_sieve(110/*_000*/));
-    println!("{:?}",primes::sundaram_sieve(110/*_000*/));
 }
 
-fn print_primes(qtd:usize){
-    primes::primes_until(qtd).iter().enumerate()
-            .map(|(i,p)| ((i%20==0), p))
-            .for_each(|(i,p)| print!("{p:3.0}, {}", if i{"\n"} else{""}));
-    println!()
+fn print_number_list(prime_list: Vec<usize>){
+    println!();
+    prime_list.iter().enumerate()
+            .map(|(i,p)| (((i+1)%20==0), p))
+            .for_each(|(i,p)| print!("{p:8.0}, {}", if i {"\n"} else {""}));
+    println!("\n\n\t {} primes found.", prime_list.len())
 }
 
 fn fibonacci(){

@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use std::collections::LinkedList;
-use std::collections::BTreeSet as Set;
+use bit_vec::BitVec;
 
 #[derive(Debug)]
 pub enum PrimeError{
@@ -32,8 +32,9 @@ pub struct NaivePrimeList {
 }
 
 impl NaivePrimeList{
-    pub fn new(known_primes:LinkedList<usize>, last:usize) -> NaivePrimeList{
-        NaivePrimeList{known_primes, last}
+    pub fn new() -> NaivePrimeList{
+        let known_primes = LinkedList::from([2, 3, 5, 7, 11]);
+        NaivePrimeList{known_primes, last: 5 }
     }
 }
 
@@ -43,11 +44,18 @@ impl Iterator for NaivePrimeList {
     fn next(&mut self) -> Option<usize> {
         let mut last = self.last;
         let limit= root_limit(last)+1;
+        let mut cycle = [2,4,2,2].iter().cycle();
+        match last%10 { /* Evita multiplos de 2 e de 5 */
+            3 => {cycle.next();},
+            7 => {cycle.next(); cycle.next();},
+            9 => {cycle.next(); cycle.next();cycle.next();},
+            _ => ()
+        }
         loop{
-            last+=2;
+            last += cycle.next().unwrap();
             if is_prime(last,
-            limit,
-            &self.known_primes).unwrap(){
+                    limit,
+                    &self.known_primes).unwrap(){
                 self.known_primes.push_back(last);
                 break
             }}
@@ -55,7 +63,7 @@ impl Iterator for NaivePrimeList {
         Some(last)
     }}
 
-/* tirar o limite do loop economiza processamento,
+/* tirar o limite de dentro do loop economiza processamento,
     Analizando as diferenças entre as raízes de números primos sequenciais,
     essa diferença parece ser sempre menor que 1.
     E tende a diminuir quanto maior ficam os números primos.
@@ -64,7 +72,7 @@ impl Iterator for NaivePrimeList {
 */
 
 pub fn primes_until(qtd: usize) -> LinkedList<usize>{
-    let mut prime_list = NaivePrimeList::new(LinkedList::from([3]),3);
+    let mut prime_list = NaivePrimeList::new();
     for i in 1..qtd{
         prime_list.next().unwrap();
         if prime_list.last >= qtd {break;}
@@ -90,39 +98,44 @@ Esses eventos são raros (cada vez que o vetor enche, sua capacidade deve cresce
 Na maioria dos casos, use vetores; se precisar do máximo de desempenho, considere usar listas ligadas.
 */
 
+/* https://primes.utm.edu/howmany.html
+Estimando a quantidade de números primos menores do que x
+*/
+fn pi(x:usize) -> usize{
+    let n = x as f64;
+    (n /(n-1.0).ln()) as usize
+}
 
 pub fn sundaram_sieve(n:usize) -> Vec<usize>{
-    let k = (n-2)/2 as usize;
-    let mut primes = Vec::with_capacity(n);
-    primes.push(2);
-    let mut composites_seeds:Set<usize> = Set::new();
-    let mut range = Set::new();
-    for i in 1..=k{
-        range.insert(i);
-        for j in i..=k{
+    let k = (n-2)/2;
+    //println!("{} estimated prime numbers.", pi(n));
+    let mut seeds = BitVec::from_elem(k, true);
+    for i in 1..k{
+        for j in i..k{
             let l = i + j + 2 * i * j;
-            if l>k{continue}
-            composites_seeds.insert(l);
+            if l>=k{continue}
+            seeds.set(l, false);
         }
     }
-    for m in range.difference(&composites_seeds){
-        primes.push(2*m+1)
-    }
+    let mut primes = vec![2usize];
+    primes.extend(
+    seeds.iter().enumerate().filter(|(i,v)| *v==true).map(|(i,v)| 2*i+1).skip(1)
+    );
     primes
-} /* Essa implementação está com desempenho ruim, provavelmente devido a operação `difference`*/
+}
 
-pub fn erathostenes_sieve(n:usize) -> Vec<usize> {
-    let number_list = 2..n;
-    let mut prime_list:Vec<usize>= Vec::with_capacity(n);
-    for j in number_list.clone(){
-        prime_list.push(j);
-        for i in number_list.clone() {
-            if j<=i{continue};
-            if j%i==0{
-                prime_list.pop();
-                break
+pub fn erathostenes_sieve(n:usize) -> Vec<usize>{
+    let limit = root_limit(n)+1;
+    let mut number_list: BitVec = BitVec::from_elem(n, true);
+
+    number_list.set(0, false);
+    number_list.set(1, false);
+    for cursor in 2..limit {
+        if number_list[cursor] {
+            for i in ((cursor*cursor)..n).step_by(cursor) {
+                number_list.set(i, false);
             }
         }
     }
-    prime_list
+    number_list.iter().enumerate().filter(|(i,v)| *v==true).map(|(i,v)| i).collect()
 }
