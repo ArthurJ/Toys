@@ -2,16 +2,19 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
 
+
 extern crate core;
 extern crate bit_vec;
 
-use std::collections::LinkedList;
+use std::fs::File;
+use std::io::{Error,Write};
 
 mod fib;
 mod fbzz;
 mod imc;
 mod qs;
 mod primes;
+mod pi;
 
 /* TODO
     Torres de Hanoi
@@ -24,10 +27,10 @@ fn main() {
     //fbzz::fizzbuzz(3, 5, 100);
     //println!("\n{:?}", imc::calc_imc(1.83, 115.0));
     //print!("\n{:?}", qs::quicksort(&[88,1,2,3,99,4,5,0,6,1101]));
-    print_number_list( primes::erathostenes_sieve(1_0_000_000));
-    // print_number_list( primes::sundaram_sieve(500_000));
-    // for _ in 0..100{
-    //     primes::erathostenes_sieve(1_0_000_000);
+    //print_number_list( primes::erathostenes_sieve(1_000_000_000));
+
+    // for _ in 0..1{
+    //     primes::erathostenes_sieve(1_000_000_000);
     // }
     //println!();
 }

@@ -101,6 +101,7 @@ Na maioria dos casos, use vetores; se precisar do máximo de desempenho, conside
 /* https://primes.utm.edu/howmany.html
 Estimando a quantidade de números primos menores do que x
 */
+
 fn pi(x:usize) -> usize{
     let n = x as f64;
     (n /(n-1.0).ln()) as usize
